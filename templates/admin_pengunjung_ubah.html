@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import field, btn, page_head, info_row %}
+
+{% block title %}Ubah Data Pengunjung{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Edit Pengunjung") }}
+  
+  <table>
+    {{ info_row("User ID", u.user_id) }}
+    {{ info_row("Email", u.email) }}
+  </table>
+
+  <form method="POST" style="margin-top: 20px;">
+    {{ field("Nama", "nama", value=u.nama, required=true) }}
+    {{ field("No HP", "no_hp", value=u.no_hp) }}
+    {{ field("Kota", "kota", value=u.asal_kota) }}
+    {{ field("Negara", "negara", value=u.asal_negara) }}
+    {{ field("Kategori Usia", "usia", type="select", options=["Anak-anak", "Pelajar", "Dewasa", "Lansia"], value=u.kategori_usia) }}
+
+    <div style="margin-top: 20px;">
+      {{ btn("Simpan", type="submit") }}
+      {{ btn("Batal", url_for("admin_pengunjung"), size="sm") }}
+    </div>
+  </form>
+</div>
+{% endblock %}

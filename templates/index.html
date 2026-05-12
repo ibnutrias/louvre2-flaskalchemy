@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import tur_card, btn %}
+
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Jelajahi Louvre secara Virtual </h1>
+  <p>Tur VR 360° koleksi museum terbesar dunia — dari rumah Anda.</p>
+  {{ btn("Lihat Semua Tur", "/") }}
+</div>
+
+<h3>Tur Tersedia</h3>
+<div>
+  {% for t in tours %}
+  {{ tur_card(t) }}
+  {% else %}
+  <p>Belum ada tur tersedia.</p>
+  {% endfor %}
+</div>
+{% endblock %}

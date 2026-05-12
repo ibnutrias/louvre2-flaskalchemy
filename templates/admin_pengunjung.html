@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import page_head %}
+
+{% block title %}Data Pengunjung{% endblock %}
+
+{% block content %}
+{{ page_head("Data Pengunjung") }}
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nama</th>
+      <th>Email</th>
+      <th>No HP</th>
+      <th>Kota</th>
+      <th>Negara</th>
+      <th>Usia</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in rows %}
+    <tr>
+      <td>{{ u.user_id }}</td>
+      <td>{{ u.nama }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.no_hp }}</td>
+      <td>{{ u.asal_kota }}</td>
+      <td>{{ u.asal_negara }}</td>
+      <td>{{ u.kategori_usia }}</td>
+      <td>
+        <a href="{{ url_for('admin_pengunjung_ubah', uid=u.user_id) }}" class="btn btn-sm">Ubah</a>
+        <form action="{{ url_for('admin_pengunjung_hapus', uid=u.user_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus akun ini?');">
+          <button type="submit" class="btn btn-sm b-red">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7">Belum ada pengunjung.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

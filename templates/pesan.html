@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "macros/ui.html"  import info_row, note, btn %}
+{% from "macros/form.html" import submit %}
+
+{% block title %}Pesan Tur{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2>{{ tur.nama_tur }}</h2>
+
+  <table>
+    {{ info_row("Harga/tiket", tur.harga|rp, gold=true) }}
+    {{ info_row("Tanggal",     tur.tanggal) }}
+    {{ info_row("Jam Mulai",   tur.jam_mulai) }}
+    {{ info_row("Titik Kumpul",tur.titik_kumpul) }}
+    {{ info_row("Sisa Kuota",  tur.kuota_tersedia) }}
+  </table>
+
+  <form method="POST">
+    <div class="f-group">
+      <label>Jumlah Tiket</label>
+      <input type="number" name="jumlah" id="jml" min="1" max="{{ tur.kuota_tersedia }}" value="1" required>
+    </div>
+    <div>
+      <span>Estimasi Total:</span>
+      <span class="gold" id="tot">{{ tur.harga|rp }}</span>
+    </div>
+    {{ note("* Total = harga × jumlah_tiket. Tidak disimpan di DB (derived attribute 3NF).") }}
+    {{ submit("Lanjut ke Pembayaran") }}
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const h = {{ tur.harga }};
+document.getElementById("jml").oninput = function(){
+  document.getElementById("tot").textContent = "Rp " + (h*this.value).toLocaleString("id-ID");
+};
+</script>
+{% endblock %}

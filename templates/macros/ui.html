@@ -1,0 +1,179 @@
+{# =============================================================
+macros/ui.html – Komponen UI reusable (Jinja2 Macros)
+Cara import: {% from "macros/ui.html" import badge, btn, ... %}
+============================================================= #}
+
+
+{# ── Badge / Label status ─────────────────────────────────────
+Contoh: {{ badge("lunas") }}
+{{ badge("tersedia", size="sm") }}
+#}
+{% macro badge(status, size="") %}
+{% set color = {
+"lunas": "b-green",
+"berhasil": "b-green",
+"aktif": "b-green",
+"tersedia": "b-green",
+"menunggu_bayar": "b-yellow",
+"menunggu": "b-yellow",
+"penuh": "b-yellow",
+"kedaluwarsa": "b-gray",
+"dibatalkan": "b-red",
+"gagal": "b-red",
+}.get(status, "b-gray") %}
+<span class="badge {{ color }}{% if size == 'sm' %} btn-sm{% endif %}">{{ status }}</span>
+{% endmacro %}
+
+
+{# ── Tombol / Anchor ──────────────────────────────────────────
+Contoh: {{ btn("Pesan", "/pesan/TUR01") }}
+{{ btn("Hapus", "/hapus/1", size="sm") }}
+{{ btn("Simpan", type="submit") }}
+#}
+{% macro btn(label, href="", size="", type="") %}
+{% if href %}
+<a class="btn{% if size %} btn-{{ size }}{% endif %}" href="{{ href }}">{{ label }}</a>
+{% else %}
+<button class="btn{% if size %} btn-{{ size }}{% endif %}" type="{{ type or 'button' }}">{{ label
+  }}</button>
+{% endif %}
+{% endmacro %}
+
+
+{# ── Form input group ─────────────────────────────────────────
+Contoh: {{ field("Nama", "nama", required=true) }}
+{{ field("Email", "email", type="email") }}
+{{ field("Deskripsi", "deskripsi", type="textarea", rows=3) }}
+{{ field("Status", "status", type="select", options=["a","b"], value=tur.status) }}
+#}
+{% macro field(label, name, type="text", value="", required=false,
+placeholder="", options=[], rows=2) %}
+<div class="f-group">
+  <label>{{ label }}{% if required %} *{% endif %}</label>
+  {% if type == "textarea" %}
+  <textarea name="{{ name }}" rows="{{ rows }}" {% if required %} required{% endif %}>{{ value }}</textarea>
+  {% elif type == "select" %}
+  <select name="{{ name }}" {% if required %} required{% endif %}>
+    {% for opt in options %}
+    <option{% if opt==value %} selected{% endif %}>{{ opt }}</option>
+      {% endfor %}
+  </select>
+  {% else %}
+  <input type="{{ type }}" name="{{ name }}" value="{{ value }}" {% if required %} required{% endif %} {% if placeholder
+    %} placeholder="{{ placeholder }}" {% endif %}>
+  {% endif %}
+</div>
+{% endmacro %}
+
+
+{# ── Tabel sederhana ──────────────────────────────────────────
+Contoh: {% call(row) datatable(rows, ["Nama","Email"]) %}
+<td>{{ row.nama }}</td>
+<td>{{ row.email }}</td>
+{% endcall %}
+#}
+{% macro datatable(rows, headers) %}
+<table>
+  <thead>
+    <tr>{% for h in headers %}<th>{{ h }}</th>{% endfor %}</tr>
+  </thead>
+  <tbody>
+    {% if rows %}
+    {% for row in rows %}
+    <tr>{{ caller(row) }}</tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+      <td colspan="{{ headers|length }}">
+        Tidak ada data.
+      </td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endmacro %}
+
+
+{# ── Stat card (dashboard) ────────────────────────────────────
+Contoh: {{ statcard("Pesanan", 42) }}
+#}
+{% macro statcard(label, value) %}
+<div class="card">
+  <div>{{ value }}</div>
+  <div>{{ label }}</div>
+</div>
+{% endmacro %}
+
+
+{# ── Page header (judul + tombol kanan) ───────────────────────
+Contoh: {{ page_head("Daftar Tur") }}
+{{ page_head("Daftar Tur", "+ Tambah", "/admin/tur/form") }}
+#}
+{% macro page_head(title, action_label="", action_href="") %}
+<div class="page-head">
+  <h2>{{ title }}</h2>
+  {% if action_label %}
+  {{ btn(action_label, action_href, size="sm") }}
+  {% endif %}
+</div>
+{% endmacro %}
+
+
+{# ── Info row (label: value) untuk detail card ────────────────
+Contoh: {{ info_row("No. Pesanan", order.pesanan_id) }}
+{{ info_row("Total Bayar", total|rp, gold=true) }}
+#}
+{% macro info_row(label, value, gold=false, code=false) %}
+<tr>
+  <th>{{ label }}</th>
+  <td>
+    {% if code %}<code>{{ value }}</code>
+    {% elif gold %}<span class="gold">{{ value }}</span>
+    {% else %}{{ value }}{% endif %}
+  </td>
+</tr>
+{% endmacro %}
+
+
+{# ── Alert / Catatan box ──────────────────────────────────────
+Contoh: {{ note("Total dihitung di query, tidak disimpan di DB.") }}
+{{ note("Terjadi kesalahan.", type="danger") }}
+#}
+{% macro note(text, type="info") %}
+  <p style="border: 1px solid black; padding: 5px; background: #eee;">
+  {{ text }}
+</p>
+{% endmacro %}
+
+
+{# ── E-tiket card ─────────────────────────────────────────────
+Contoh: {{ tiket_card(tk, loop.index) }}
+#}
+{% macro tiket_card(tk, idx) %}
+<div class="card">
+  <div>
+    <div>Tiket #{{ idx }} &nbsp; <code>{{ tk.tiket_id }}</code></div>
+    <code>{{ tk.qr_code }}</code>
+  </div>
+  {{ badge(tk.status_tiket) }}
+</div>
+{% endmacro %}
+
+
+{# ── Tur card (untuk grid katalog) ───────────────────────────
+Contoh: {{ tur_card(t) }}
+#}
+{% macro tur_card(t) %}
+<div class="card">
+  <div>
+    <span>{{ t.durasi }} | {{ t.titik_kumpul }}</span>
+    {{ badge(t.status_jadwal) }}
+  </div>
+  <h3>{{ t.nama_tur }}</h3>
+  <p>{{ t.deskripsi }}</p>
+  <div>
+    <span class="gold">{{ t.harga|rp }}</span>
+    {{ btn("Pesan", "/pesan/" ~ t.tur_id, size="sm") }}
+  </div>
+</div>
+{% endmacro %}

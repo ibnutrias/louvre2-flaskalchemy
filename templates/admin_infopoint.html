@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import btn, page_head, datatable %}
+
+{% block title %}Info Points{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Daftar Info Point", "+ Baru", url_for("admin_infopoint_form")) }}
+  
+  {% call(ip) datatable(rows, ["Tur", "Label", "Koordinat (X,Y,Z)", "Aksi"]) %}
+    <td>{{ ip.route.nama_tur }}</td>
+    <td>{{ ip.label }}</td>
+    <td><code>({{ ip.coordinate_x }}, {{ ip.coordinate_y }}, {{ ip.coordinate_z }})</code></td>
+    <td>
+      {{ btn("Ubah", url_for("admin_infopoint_form", ip_id=ip.info_point_id), size="sm") }}
+      <form action="{{ url_for('admin_infopoint_hapus', ip_id=ip.info_point_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus info point ini?');">
+        <button type="submit" class="btn btn-sm b-red" style="color:white; border:none;">Hapus</button>
+      </form>
+    </td>
+  {% endcall %}
+</div>
+{% endblock %}

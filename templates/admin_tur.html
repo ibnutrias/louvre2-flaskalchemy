@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import badge, btn, page_head %}
+
+{% block title %}Manajemen Tur{% endblock %}
+
+{% block content %}
+{{ page_head("Manajemen Tur", "+ Tambah Tur", "/admin/tur/form") }}
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nama Tur</th>
+      <th>Harga</th>
+      <th>Kapasitas</th>
+      <th>Kuota</th>
+      <th>Tanggal</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in tours %}
+    <tr>
+      <td>{{ t.tur_id }}</td>
+      <td>{{ t.nama_tur }}</td>
+      <td class="gold">{{ t.harga|rp }}</td>
+      <td>{{ t.kapasitas }}</td>
+      <td>{{ t.kuota_tersedia }}</td>
+      <td>{{ t.tanggal }}</td>
+      <td>{{ badge(t.status_jadwal) }}</td>
+      <td>
+        {{ btn("Edit", "/admin/tur/form/" ~ t.tur_id, size="sm") }}
+        <form action="{{ url_for('admin_tur_hapus', tur_id=t.tur_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus tur ini?');">
+          <button type="submit" class="btn btn-sm b-red">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="8">Belum ada tur.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

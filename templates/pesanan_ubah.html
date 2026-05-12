@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import field, btn, page_head, info_row %}
+
+{% block title %}Ubah Pesanan{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Ubah Jumlah Tiket") }}
+  
+  <table>
+    {{ info_row("No. Pesanan", order.pesanan_id) }}
+    {{ info_row("Nama Tur", tur.nama_tur) }}
+    {{ info_row("Tanggal", tur.tanggal) }}
+    {{ info_row("Jam Mulai", tur.jam_mulai) }}
+  </table>
+
+  <form method="POST" style="margin-top: 20px;">
+    {{ field("Jumlah Tiket Baru", "jumlah", type="number", value=order.jumlah_tiket, required=true) }}
+    <p><small>Kapasitas tersedia saat ini: <strong>{{ tur.kuota_tersedia + order.jumlah_tiket }}</strong></small></p>
+
+    <div style="margin-top: 20px;">
+      {{ btn("Perbarui Pesanan", type="submit") }}
+      {{ btn("Kembali", url_for("jadwal"), size="sm") }}
+    </div>
+  </form>
+</div>
+{% endblock %}

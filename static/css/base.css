@@ -1,0 +1,94 @@
+body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      color: black;
+      background: white;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    nav {
+      border-bottom: 2px solid black;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+    }
+
+    nav a {
+      margin-right: 15px;
+      text-decoration: underline;
+      color: blue;
+      font-weight: bold;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th { background: #eee; }
+
+    .btn {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: black;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
+
+    .btn-sm { font-size: 0.8em; }
+
+    .badge {
+      padding: 2px 5px;
+      border: 1px solid black;
+      font-size: 0.8em;
+    }
+
+    /* Status colors only if necessary for clarity, but very simple */
+    .b-green { background: #dfd; }
+    .b-yellow { background: #ffd; }
+    .b-red { background: #fdd; }
+    .b-gray { background: #eee; }
+
+    .f-group { margin-bottom: 15px; }
+    .f-group label { display: block; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 5px; }
+
+    .f-row { display: flex; gap: 10px; }
+    .f-row > * { flex: 1; }
+
+    .flash {
+      padding: 10px;
+      border: 2px solid black;
+      margin-bottom: 20px;
+    }
+
+    .gold { font-weight: bold; }
+
+    footer {
+      border-top: 1px solid black;
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9em;
+    }

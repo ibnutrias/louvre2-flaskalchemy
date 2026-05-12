@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import field, btn, page_head, info_row, badge %}
+
+{% block title %}Ubah Status Pesanan{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Kelola Pesanan") }}
+  
+  <table>
+    {{ info_row("ID Pesanan", order.pesanan_id) }}
+    {{ info_row("Nama Pemesan", order.user.nama) }}
+    {{ info_row("Tur", order.route.nama_tur) }}
+    {{ info_row("Jumlah Tiket", order.jumlah_tiket) }}
+    {{ info_row("Total Biaya", order.total_biaya|rp, gold=true) }}
+    <tr>
+      <th>Status Saat Ini</th>
+      <td>{{ badge(order.status_pesanan) }}</td>
+    </tr>
+  </table>
+
+  <form method="POST" style="margin-top: 20px;">
+    {{ field("Ubah Status", "status_pesanan", type="select", 
+       options=["menunggu_bayar", "lunas", "dibatalkan"], value=order.status_pesanan) }}
+
+    <div style="margin-top: 20px;">
+      {{ btn("Simpan", type="submit") }}
+      {{ btn("Batal", url_for("admin_pesanan"), size="sm") }}
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import field, btn, page_head %}
+
+{% block title %}Edit Profil{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Edit Profil") }}
+  
+  <form method="POST">
+    {{ field("Nama Lengkap", "nama", value=u.nama, required=true) }}
+    {{ field("Nomor HP", "no_hp", value=u.no_hp) }}
+    {{ field("Asal Kota", "kota", value=u.asal_kota) }}
+    {{ field("Asal Negara", "negara", value=u.asal_negara) }}
+    {{ field("Kategori Usia", "usia", type="select", options=["Anak-anak", "Pelajar", "Dewasa", "Lansia"], value=u.kategori_usia) }}
+    
+    <div style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #ccc;">
+      <p><small>Kosongkan password jika tidak ingin mengubahnya.</small></p>
+      {{ field("Password Baru", "password", type="password") }}
+    </div>
+
+    <div style="margin-top: 20px;">
+      {{ btn("Simpan Perubahan", type="submit") }}
+      {{ btn("Batal", url_for("index"), size="sm") }}
+    </div>
+  </form>
+
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #fee;">
+    <h3>Hapus Akun</h3>
+    <p>Tindakan ini tidak dapat dibatalkan. Semua data pesanan Anda akan hilang.</p>
+    <form action="{{ url_for('profil_hapus') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun?');">
+      <button type="submit" class="btn btn-sm b-red" style="color: white; border: none;">Hapus Akun Saya</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

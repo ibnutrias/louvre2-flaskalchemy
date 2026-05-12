@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "macros/form.html" import form_card, submit %}
+{% from "macros/ui.html"  import field %}
+
+{% block title %}Daftar{% endblock %}
+
+{% block content %}
+{% call form_card("Buat Akun") %}
+  <div class="f-row">
+    {{ field("Nama *",  "nama",  required=true) }}
+    {{ field("Email *", "email", type="email", required=true) }}
+  </div>
+  <div class="f-row">
+    {{ field("No HP",  "no_hp") }}
+    {{ field("Kategori Usia", "usia", type="select",
+             options=["Dewasa","Pelajar","Anak"]) }}
+  </div>
+  <div class="f-row">
+    {{ field("Kota",   "kota") }}
+    {{ field("Negara", "negara") }}
+  </div>
+  {{ field("Password *", "password", type="password", required=true) }}
+  {{ submit("Daftar Sekarang") }}
+  <p>
+    Sudah punya akun? <a href="/login">Login</a>
+  </p>
+{% endcall %}
+{% endblock %}

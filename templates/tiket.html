@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import info_row, note, tiket_card, btn %}
+
+{% block title %}E-Tiket{% endblock %}
+
+{% block content %}
+<div>
+  <h2>✅ Pembayaran Berhasil!</h2>
+</div>
+
+<div class="card">
+  <h3>Detail Pesanan</h3>
+  <table>
+    {{ info_row("No. Pesanan",  order.pesanan_id, code=true) }}
+    {{ info_row("Paket",        order.nama_tur) }}
+    {{ info_row("Tanggal",      order.tanggal ~ " " ~ order.jam_mulai) }}
+    {{ info_row("Titik Kumpul", order.titik_kumpul) }}
+    {{ info_row("Jumlah Tiket", order.jumlah_tiket) }}
+    {{ info_row("Total Bayar *",order.total_biaya|rp, gold=true) }}
+    {% if bayar %}
+      {{ info_row("Metode", bayar.metode) }}
+    {% endif %}
+  </table>
+  {{ note("* Derived attribute (harga × jumlah_tiket) — tidak disimpan di DB (3NF).") }}
+</div>
+
+<h3>🎫 E-Tiket ({{ tikets|length }})</h3>
+{% for tk in tikets %}
+  {{ tiket_card(tk, loop.index) }}
+{% endfor %}
+
+<div>
+  {{ btn("Jadwal Saya", "/jadwal") }}
+  {{ btn("Beranda", "/") }}
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "macros/form.html" import form_card, login_form %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% call form_card("Login", max_width="360px") %}
+{{ login_form("/login") }}
+<p>
+  Belum punya akun? <a href="/register">Daftar</a>
+</p>
+{% endcall %}
+{% endblock %}

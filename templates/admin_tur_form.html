@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "macros/form.html" import form_card, submit, tur_form %}
+{% from "macros/ui.html"  import btn %}
+
+{% block title %}{% if tur %}Edit Tur{% else %}Tambah Tur{% endif %}{% endblock %}
+
+{% block content %}
+{% call form_card(("Edit: " ~ tur.tur_id) if tur else "Tambah Tur Baru", max_width="580px") %}
+  {{ tur_form(tur) }}
+  {{ submit("Simpan Perubahan" if tur else "Tambah Tur") }}
+  <div>{{ btn("← Kembali", "/admin/tur", size="sm") }}</div>
+{% endcall %}
+{% endblock %}

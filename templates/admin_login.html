@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "macros/form.html" import form_card, login_form %}
+
+{% block title %}Login Admin{% endblock %}
+
+{% block content %}
+{% call form_card(" Login Admin", max_width="360px") %}
+{{ login_form("/admin/login", uid_field=true) }}
+{% endcall %}
+{% endblock %}

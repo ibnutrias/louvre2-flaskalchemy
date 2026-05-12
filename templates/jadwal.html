@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import badge, btn, page_head %}
+
+{% block title %}Jadwal Saya{% endblock %}
+
+{% block content %}
+{{ page_head("📋 Jadwal Saya", "+ Pesan Baru", "/") }}
+
+{% for o in rows %}
+<div class="card">
+  <div>
+    <span><code>{{ o.pesanan_id }}</code> &nbsp; {{ badge(o.status_pesanan) }}</span>
+    <span margin:.4rem 0">{{ o.nama_tur }}</h3>
+      <p>
+        📅 {{ o.tanggal }} &nbsp; 🎫 {{ o.jumlah_tiket }} tiket &nbsp;
+        <span class="gold">{{ o.total_biaya|rp }}</span>
+      </p>
+      <div>
+        {% if o.status_pesanan == "lunas" %}
+        {{ btn("Lihat Tiket", "/tiket/" ~ o.pesanan_id, size="sm") }}
+        {% elif o.status_pesanan == "menunggu_bayar" %}
+        {{ btn("Bayar Sekarang", "/bayar/" ~ o.pesanan_id, size="sm") }}
+        {% endif %}
+      </div>
+  </div>
+  {% else %}
+  <div class="card">
+    <p>Belum ada pesanan.</p>
+    {{ btn("Pesan Tur", "/") }}
+  </div>
+  {% endfor %}
+  {% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import statcard, badge, btn, page_head, note %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block content %}
+{{ page_head("⚙ Dashboard – " ~ session.anam) }}
+
+{# Stat cards #}
+<div>
+  {{ statcard("Pengunjung", stats.pengunjung) }}
+  {{ statcard("Jenis Tur", stats.tur) }}
+  {{ statcard("Pesanan", stats.pesanan) }}
+  {{ statcard("E-Tiket", stats.tiket) }}
+</div>
+
+{# Quick nav #}
+<div>
+  {{ btn("Manajemen Tur", "/admin/tur", size="sm") }}
+  {{ btn("Daftar Pesanan", "/admin/pesanan", size="sm") }}
+  {{ btn("Data Pengunjung","/admin/pengunjung", size="sm") }}
+  {{ btn("Info Points", "/admin/infopoint", size="sm") }}
+</div>
+
+{# Tabel pesanan terbaru #}
+<h3>Pesanan Terbaru</h3>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Pengunjung</th>
+      <th>Tur</th>
+      <th>Tiket</th>
+      <th>Total *</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in recent %}
+    <tr>
+      <td><code>{{ o.pesanan_id }}</code></td>
+      <td>{{ o.nama }}</td>
+      <td>{{ o.nama_tur }}</td>
+      <td>{{ o.jumlah_tiket }}</td>
+      <td class="gold">{{ o.total_biaya|rp }}</td>
+      <td>{{ badge(o.status_pesanan) }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6">Belum ada pesanan.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{{ note("* Total = harga × jumlah_tiket (derived attribute, tidak disimpan di DB).") }}
+{% endblock %}

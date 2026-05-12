@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "macros/ui.html"  import info_row, note %}
+{% from "macros/form.html" import submit %}
+
+{% block title %}Pembayaran{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2>💳 Pembayaran</h2>
+
+  <table>
+    {{ info_row("No. Pesanan", order.pesanan_id, code=true) }}
+    {{ info_row("Paket",       order.nama_tur) }}
+    {{ info_row("Jumlah Tiket",order.jumlah_tiket) }}
+    {{ info_row("Total Bayar *", order.total_biaya|rp, gold=true) }}
+  </table>
+
+  {{ note("* Derived attribute (harga × jumlah_tiket) — tidak tersimpan di kolom database manapun (3NF).") }}
+
+  <form method="POST">
+    <div class="f-group">
+      <label>Metode Pembayaran</label>
+      <div>
+        {% for m in ["QRIS","VA","e-wallet"] %}
+          <label>
+            <input type="radio" name="metode" value="{{ m }}" {% if loop.first %}checked{% endif %}> {{ m }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    {{ submit("✅ Bayar Sekarang") }}
+  </form>
+</div>
+{% endblock %}

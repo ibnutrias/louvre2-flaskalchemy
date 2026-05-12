@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import field, btn, page_head %}
+
+{% block title %}Form Info Point{% endblock %}
+
+{% block content %}
+<div class="card">
+  {{ page_head("Form Info Point") }}
+  
+  <form method="POST">
+    <div class="f-group">
+      <label>Pilih Tur *</label>
+      <select name="tur_id" required>
+        {% for t in tours %}
+          <option value="{{ t.tur_id }}" {% if ip and ip.tur_id == t.tur_id %}selected{% endif %}>
+            {{ t.tur_id }} - {{ t.nama_tur }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    {{ field("Label", "label", value=ip.label if ip else "", required=true) }}
+    {{ field("Koordinat X", "coordinate_x", type="number", value=ip.coordinate_x if ip else 0) }}
+    {{ field("Koordinat Y", "coordinate_y", type="number", value=ip.coordinate_y if ip else 0) }}
+    {{ field("Koordinat Z", "coordinate_z", type="number", value=ip.coordinate_z if ip else 0) }}
+    {{ field("Konten / Deskripsi", "content", type="textarea", value=ip.content if ip else "") }}
+
+    <div style="margin-top: 20px;">
+      {{ btn("Simpan", type="submit") }}
+      {{ btn("Batal", url_for("admin_infopoint"), size="sm") }}
+    </div>
+  </form>
+</div>
+{% endblock %}

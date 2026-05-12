@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Louvre VR{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <!-- <style>
+    
+  </style> -->
+</head>
+
+<body>
+
+  <nav>
+    <a href="/" style="text-decoration: none; border: 2px solid black; padding: 2px 5px;">LOUVRE VR</a>
+    <a href="/">Beranda</a>
+    {% if session.uid %}
+    <a href="/jadwal">Jadwal Saya</a>
+    <a href="/profil/edit">Profil</a>
+    <a href="/logout">Keluar ({{ session.nama }})</a>
+    {% else %}
+    <a href="/login">Login</a>
+    <a href="/register">Daftar</a>
+    {% endif %}
+    {% if session.aid %}
+    <a href="/admin">Admin Dashboard</a>
+    <a href="/admin/logout">Keluar Admin</a>
+    {% else %}
+    <a href="/admin/login">Admin Access</a>
+    {% endif %}
+  </nav>
+
+  <div class="wrap">
+    {% for cat, msg in get_flashed_messages(with_categories=true) %}
+    <div class="flash">[{{ cat|upper }}] {{ msg }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>
+    Louvre Museum Virtual Tour | Flask + SQLAlchemy | 3NF Architecture
+  </footer>
+
+</body>
+
+</html>
+</body>
+
+</html>

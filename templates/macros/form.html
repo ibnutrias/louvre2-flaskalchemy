@@ -1,0 +1,83 @@
+{# =============================================================
+macros/form.html – Macro form reusable
+============================================================= #}
+{% from "macros/ui.html" import field, btn %}
+
+
+{# ── Form wrapper (card + heading) ───────────────────────────
+Contoh:
+{% call form_card("Tambah Tur", "/admin/tur/form") %}
+{{ field("Nama", "nama") }}
+{{ submit("Simpan") }}
+{% endcall %}
+#}
+{% macro form_card(title, action="", method="POST", max_width="520px") %}
+<div class="card">
+  <h2>{{ title }}</h2>
+  <form method="{{ method }}" {% if action %}action="{{ action }}" {% endif %}>
+    {{ caller() }}
+  </form>
+</div>
+{% endmacro %}
+
+
+{# ── Submit button full-width ─────────────────────────────────
+Contoh: {{ submit("Daftar") }}
+#}
+{% macro submit(label="Simpan") %}
+<button class="btn btn-gold" type="submit">{{ label }}</button>
+{% endmacro %}
+
+
+{# ── Form login (pengunjung & admin) ─────────────────────────
+Contoh: {{ login_form(action="/login", uid_field=false) }}
+{{ login_form(action="/admin/login", uid_field=true) }}
+#}
+{% macro login_form(action, uid_field=false) %}
+<form method="POST" action="{{ action }}">
+  {% if uid_field %}
+  {{ field("ID Admin", "uid", placeholder="UID-ADM01", required=true) }}
+  {% else %}
+  {{ field("Email", "email", type="email", required=true) }}
+  {% endif %}
+  {{ field("Password", "password", type="password", required=true) }}
+  {{ submit("Masuk") }}
+</form>
+{% endmacro %}
+
+
+{# ── Form tur (tambah / edit) ────────────────────────────────
+Contoh: {{ tur_form(tur=None) }} ← tambah baru
+{{ tur_form(tur=tur) }} ← edit existing
+#}
+{% macro tur_form(tur=None) %}
+<div class="f-row">
+  {{ field("Nama Tur *", "nama_tur", required=true, value=tur.nama_tur if tur else "") }}
+  {{ field("Durasi", "durasi", value=tur.durasi if tur else "", placeholder="3 jam") }}
+</div>
+{{ field("Deskripsi", "deskripsi", type="textarea",
+value=tur.deskripsi if tur else "") }}
+<div class="f-row">
+  {{ field("Harga *", "harga", type="number", required=true,
+  value=tur.harga if tur else "") }}
+  {{ field("Kapasitas *", "kapasitas", type="number", required=true,
+  value=tur.kapasitas if tur else "") }}
+</div>
+<div class="f-row">
+  {{ field("Tanggal", "tanggal", type="date",
+  value=tur.tanggal|string if tur else "") }}
+  {{ field("Jam Mulai", "jam_mulai", type="time",
+  value=tur.jam_mulai|string if tur else "") }}
+</div>
+{{ field("Titik Kumpul", "titik_kumpul",
+value=tur.titik_kumpul if tur else "") }}
+{% if tur %}
+<div class="f-row">
+  {{ field("Kuota Tersedia", "kuota_tersedia", type="number",
+  value=tur.kuota_tersedia) }}
+  {{ field("Status", "status_jadwal", type="select",
+  options=["tersedia","penuh","dibatalkan"],
+  value=tur.status_jadwal) }}
+</div>
+{% endif %}
+{% endmacro %}

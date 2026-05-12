@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "macros/ui.html" import badge, note, page_head %}
+
+{% block title %}Daftar Pesanan{% endblock %}
+
+{% block content %}
+{{ page_head("Daftar Pesanan") }}
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Pengunjung</th>
+      <th>Tur</th>
+      <th>Tiket</th>
+      <th>Total *</th>
+      <th>Waktu Pesan</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in rows %}
+    <tr>
+      <td><code>{{ o.pesanan_id }}</code></td>
+      <td>{{ o.nama }}</td>
+      <td>{{ o.nama_tur }}</td>
+      <td>{{ o.jumlah_tiket }}</td>
+      <td class="gold">{{ o.total_biaya|rp }}</td>
+      <td>{{ o.waktu_pesan }}</td>
+      <td>{{ badge(o.status_pesanan) }}</td>
+      <td>
+        <a href="{{ url_for('admin_pesanan_ubah', pid=o.pesanan_id) }}" class="btn btn-sm">Ubah</a>
+        <form action="{{ url_for('admin_pesanan_hapus', pid=o.pesanan_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus pesanan ini?');">
+          <button type="submit" class="btn btn-sm b-red">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7">Belum ada pesanan.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{{ note("* Total = harga × jumlah_tiket (derived attribute, tidak disimpan di DB — 3NF).") }}
+{% endblock %}
